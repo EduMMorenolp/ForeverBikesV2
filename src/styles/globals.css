@@ -87,12 +87,10 @@ body {
 
 .visualizer-column {
   flex: 0 0 65%;
-  background: radial-gradient(circle at 50% 50%, #ffffff 0%, #ececec 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  border: 1px solid #f0f0f0;
 }
 
 .visualizer-column::after {

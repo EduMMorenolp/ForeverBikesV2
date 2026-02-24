@@ -48,7 +48,7 @@ function App() {
       <footer className="footer">
         <div className="container">
           <div className="footer-logo">FOREVER</div>
-          <p>© 2026 Forever Bikes Argentina. Tienda oficial.</p>
+          <p>© 2026 Forever Bikes Argentina. Tienda NO oficial.</p>
         </div>
       </footer>
     </div>
