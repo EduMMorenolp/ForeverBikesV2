@@ -1,156 +1,192 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 function ProductDetails({ product, selectedColor, onColorChange }) {
-  // Formatear precio al estilo argentino
-  const formattedPrice = product.price.toLocaleString('es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    minimumFractionDigits: 2
-  });
+  const [quantity, setQuantity] = useState(1);
 
   return (
-    <div className="product-details">
-      <nav className="breadcrumbs">Bicicletas / {product.name}</nav>
-      <h1 className="product-name">{product.name}</h1>
+    <div className="product-details-container">
+      <nav className="breadcrumbs-nav">Bicicletas / {product.name}</nav>
       
-      <div className="selection-group">
-        <label className="selection-label">COLOR</label>
-        <div className="color-options">
-          {product.colors.map(color => (
-            <button
-              key={color.id}
-              className={`color-button ${selectedColor === color.id ? 'active' : ''}`}
-              style={{ backgroundColor: color.hex }}
-              onClick={() => onColorChange(color.id)}
-              title={color.name}
-            />
-          ))}
+      <div className="selectors-section">
+        <div className="selector-item">
+          <label className="selector-label">COLOR: <span className="selected-value-text">{product.colors.find(c => c.id === selectedColor)?.name}</span></label>
+          <div className="color-grid">
+            {product.colors.map(color => (
+              <button
+                key={color.id}
+                className={`color-swatch-btn ${selectedColor === color.id ? 'is-active' : ''}`}
+                style={{ backgroundColor: color.hex }}
+                onClick={() => onColorChange(color.id)}
+                aria-label={`Seleccionar color ${color.name}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="description">
-        <p>{product.description}</p>
+      <div className="product-extra-info">
+        <div className="info-tab">DESCRIPCIÓN</div>
+        <div className="info-content">
+          <p>{product.description}</p>
+        </div>
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .product-details {
+        .product-details-container {
           display: flex;
           flex-direction: column;
+          animation: revealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .breadcrumbs {
+        @keyframes revealUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .breadcrumbs-nav {
           text-transform: uppercase;
-          font-size: 12px;
-          color: #888;
-          letter-spacing: 1px;
-          margin-bottom: 20px;
+          font-size: 11px;
+          color: #999;
+          letter-spacing: 1.5px;
+          margin-bottom: 24px;
         }
-        .product-name {
+        .product-title-bold {
           font-family: var(--font-heading);
-          font-size: 28px;
+          font-size: 34px;
           font-weight: 700;
-          margin: 0 0 8px 0;
-          line-height: 1.2;
+          margin: 0 0 12px 0;
+          line-height: 1.1;
+          letter-spacing: -0.5px;
         }
-        .price-container {
-          margin-bottom: 30px;
+        .price-block {
+          margin-bottom: 40px;
         }
-        .product-price {
-          font-family: var(--font-body);
-          font-size: 22px;
+        .main-price {
+          font-size: 26px;
           font-weight: 400;
-          color: var(--color-primary);
-          margin-bottom: 5px;
+          margin-bottom: 8px;
         }
-        .installments-info {
+        .installments-badge {
           font-size: 14px;
-          color: var(--color-primary);
-          margin-bottom: 4px;
+          padding: 4px 0;
         }
-        .discount-info {
+        .cash-discount {
           font-size: 14px;
           color: var(--color-accent);
           font-weight: 700;
+          margin-top: 4px;
         }
-        .selection-group {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          margin-bottom: 30px;
+        .selectors-section {
+          margin-bottom: 40px;
         }
-        .selection-label {
-          font-size: 14px;
+        .selector-label {
+          display: block;
+          font-size: 13px;
           font-weight: 700;
-          letter-spacing: 0.5px;
-          color: #000;
+          margin-bottom: 12px;
+          letter-spacing: 1px;
         }
-        .color-options {
+        .selected-value-text {
+          font-weight: 400;
+          color: #666;
+          margin-left: 5px;
+          text-transform: none;
+        }
+        .color-grid {
           display: flex;
-          gap: 8px;
+          gap: 12px;
         }
-        .color-button {
-          width: 38px;
-          height: 38px;
+        .color-swatch-btn {
+          width: 36px;
+          height: 36px;
           border: 1px solid rgba(0,0,0,0.1);
           cursor: pointer;
-          transition: border 0.2s;
-          padding: 0;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
           border-radius: 0;
+          position: relative;
         }
-        .color-button.active {
-          border: 1px solid var(--color-primary);
-          outline: 1px solid var(--color-primary);
-          outline-offset: 2px;
+        .color-swatch-btn:hover {
+          transform: scale(1.08);
+          border-color: rgba(0,0,0,0.3);
         }
-        .action-area {
+        .color-swatch-btn.is-active {
+          border: 1px solid #000;
+          padding: 3px;
+          background-clip: content-box;
+          outline: 1px solid #000;
+          outline-offset: 3px;
+        }
+        .purchase-actions {
           display: flex;
-          gap: 10px;
-          margin-bottom: 30px;
+          gap: 12px;
+          margin-bottom: 50px;
         }
-        .quantity-selector {
+        .quantity-box {
           display: flex;
-          border: 1px solid rgba(0,0,0,0.2);
-          height: 48px;
+          border: 1px solid #e2e2e2;
+          height: 54px;
         }
-        .qty-btn {
-          width: 40px;
+        .q-btn {
+          width: 45px;
           background: none;
           border: none;
-          font-size: 18px;
+          font-size: 20px;
           cursor: pointer;
+          transition: background 0.2s;
         }
-        .qty-input {
+        .q-btn:hover { background: #f9f9f9; }
+        .q-input {
           width: 40px;
           border: none;
           text-align: center;
           font-size: 16px;
           font-family: var(--font-body);
         }
-        .add-to-cart {
+        .primary-cta-btn {
           flex-grow: 1;
-          background: var(--color-primary);
-          color: var(--color-secondary);
+          background: #000;
+          color: #fff;
           border: none;
-          padding: 0 20px;
-          height: 48px;
+          padding: 0 30px;
+          height: 54px;
           font-weight: 700;
           font-size: 14px;
           cursor: pointer;
-          transition: opacity 0.2s;
-          letter-spacing: 1px;
+          transition: all 0.3s;
+          letter-spacing: 2px;
           border-radius: 0;
         }
-        .add-to-cart:hover {
-          opacity: 0.9;
+        .primary-cta-btn:hover {
+          background: #333;
+          letter-spacing: 3px;
         }
-        .description {
-          font-size: 15px;
-          color: #333;
-          line-height: 1.6;
+        .product-extra-info {
           border-top: 1px solid #eee;
-          padding-top: 30px;
+          padding-top: 40px;
+        }
+        .info-tab {
+          font-size: 13px;
+          font-weight: 700;
+          letter-spacing: 1px;
+          margin-bottom: 20px;
+          position: relative;
+          display: inline-block;
+        }
+        .info-tab::after {
+          content: '';
+          position: absolute;
+          bottom: -5px;
+          left: 0;
+          width: 30px;
+          height: 2px;
+          background: #000;
+        }
+        .info-content {
+          font-size: 15px;
+          color: #444;
+          line-height: 1.7;
         }
       `}} />
     </div>
   )
 }
+
 export default ProductDetails
