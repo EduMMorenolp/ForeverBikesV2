@@ -66,42 +66,49 @@ body {
 }
 
 /* Optimizaciones de UX Global */
+::selection {
+  background-color: var(--color-accent);
+  color: white;
+}
+
 * {
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 body {
-  animation: pageFadeIn 1s ease-out;
+  animation: pageFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-x: hidden;
 }
 
 @keyframes pageFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; filter: blur(10px); }
+  to { opacity: 1; filter: blur(0); }
 }
 
 .visualizer-column {
   flex: 0 0 65%;
-  background: radial-gradient(circle at center, #ffffff 0%, #f4f4f4 100%);
+  background: radial-gradient(circle at 50% 50%, #ffffff 0%, #ececec 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 700px;
   position: relative;
+  border: 1px solid #f0f0f0;
 }
 
 .visualizer-column::after {
-  content: 'DESLIZA PARA VER DETALLES';
+  content: 'EXPERIENCIA INTERACTIVA';
   position: absolute;
-  bottom: 20px;
-  font-size: 9px;
-  letter-spacing: 3px;
-  color: #ccc;
+  bottom: 25px;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: #bbb;
   font-weight: 700;
+  opacity: 0.6;
 }
 
 .details-sidebar {
   flex: 0 0 35%;
-  padding: 0; /* Ajustado para alineación directa */
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
 }
@@ -110,33 +117,30 @@ body {
 .footer {
   background: var(--color-primary);
   color: var(--color-secondary);
-  padding: 60px 0 55px;
-  margin-top: 80px;
+  padding: 80px 0 60px;
+  margin-top: 100px;
   text-align: center;
 }
 
 .footer-logo {
   font-family: var(--font-heading);
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
   margin-bottom: 30px;
+  letter-spacing: 5px;
 }
 
 @media (max-width: 1024px) {
   .product-page {
     flex-direction: column;
-    padding: 20px;
+    padding: 0 20px;
+    gap: 40px;
   }
-  .visualizer-column, .details-sidebar {
+  .visualizer-column {
     flex: 0 0 100%;
+    min-height: 500px;
   }
-}
-
-@media (max-width: 1024px) {
-  .product-page {
-    flex-direction: column;
-  }
-  .visualizer-column, .details-sidebar {
+  .details-sidebar {
     flex: 0 0 100%;
   }
 }
